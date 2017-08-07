@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import escapeRegExp from 'escape-string-regexp'
-import sortBy from 'sort-by'
 import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends Component {
@@ -37,6 +35,12 @@ class SearchBooks extends Component {
 		})
   	}
 
+  	updateBook(book, e) {
+  		this.setState((state) => ({
+	       library: state.library.filter((c) => (c.id == book.id) ? c.shelf = e : c.shelf=c.shelf)
+      }))
+  		this.props.onChangeShelf(book, e)
+  	}
 	render () {
 
 
@@ -73,7 +77,7 @@ class SearchBooks extends Component {
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})`}}></div>
                             <div className="book-shelf-changer">
 
-                              <select value={book.shelf} onChange={(event) => onChangeShelf(book, event.target.value)}>
+                              <select value={book.shelf} onChange={(event) => this.updateBook(book, event.target.value)}>
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
